@@ -40,6 +40,4 @@ systemctl enable wg-quick@wg
 ```
 
 
-```
 
-```
