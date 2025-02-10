@@ -15,16 +15,22 @@ echo "创建文件夹结构..."
 mkdir -p "$KEYS_DIR"
 mkdir -p "$CONFIGS_DIR"
 
-
-
 # 提示用户输入监听端口、公网IP和客户端数量
 read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
 SERVER_LISTEN_PORT=${SERVER_LISTEN_PORT:-51820}
 
-read -p "请输入服务器的公网IP地址或者经dns解析过的域名: " SERVER_PUBLIC_IP
+read -p "请输入服务器的公网IP地址或经dns解析过的域名: " SERVER_PUBLIC_IP
 
-read -p "请输入客户端数量 (默认为 50): " CLIENT_COUNT
-CLIENT_COUNT=${CLIENT_COUNT:-50}
+# 客户端数量必须大于等于 1 且小于等于 253
+while true; do
+    read -p "请输入客户端数量 (默认为 50，最小 1，最大 253): " CLIENT_COUNT
+    CLIENT_COUNT=${CLIENT_COUNT:-50}
+    if [[ $CLIENT_COUNT -ge 1 && $CLIENT_COUNT -le 253 ]]; then
+        break
+    else
+        echo "客户端数量必须大于等于 1 且小于等于 253，请重新输入。"
+    fi
+done
 
 # 设置内网 IP 段
 SUBNET="10.2.0.0/24"
