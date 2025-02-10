@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "本项目地址：https://github.com/help660vip/wireguard"
 # 设置基础目录
 BASE_DIR="$(pwd)/wireguard_setup"            # 创建的基础文件夹路径，位于当前目录下
 SERVER_CONFIG="$BASE_DIR/wg0.conf"            # 服务器端的 WireGuard 配置文件路径
@@ -14,7 +15,7 @@ echo "创建文件夹结构..."
 mkdir -p "$KEYS_DIR"
 mkdir -p "$CONFIGS_DIR"
 
-echo "本项目地址：https://github.com/help660vip/wireguard"
+
 
 # 提示用户输入监听端口、公网IP和客户端数量
 read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
