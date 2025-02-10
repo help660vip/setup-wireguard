@@ -34,7 +34,7 @@ cp $(pwd)/wireguard_setup/wg0.conf /etc/wiregurad/wg0.conf
 #使用生成的服务端文件
 wg-quick up wg0
 #配置开机自启（非必要）
-systemctl enable wg-quick@wg
+systemctl enable wg-quick@wg0
 ```
 
 
