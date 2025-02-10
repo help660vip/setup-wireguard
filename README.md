@@ -9,7 +9,7 @@ sudo -i
 
 #安装wireguard软件
 apt update
-apt install wireguard resolvconf wget nano -y
+apt install wireguard resolvconf wget -y
 
 #开启IP转发
 echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
