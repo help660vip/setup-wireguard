@@ -20,7 +20,7 @@ echo "本项目地址：https://github.com/help660vip/wireguard"
 read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
 SERVER_LISTEN_PORT=${SERVER_LISTEN_PORT:-51820}
 
-read -p "请输入服务器的公网IP地址: " SERVER_PUBLIC_IP
+read -p "请输入服务器的公网IP地址或者经dns解析过的域名: " SERVER_PUBLIC_IP
 
 read -p "请输入客户端数量 (默认为 50): " CLIENT_COUNT
 CLIENT_COUNT=${CLIENT_COUNT:-50}
