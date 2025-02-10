@@ -14,6 +14,8 @@ echo "创建文件夹结构..."
 mkdir -p "$KEYS_DIR"
 mkdir -p "$CONFIGS_DIR"
 
+echo "本项目地址：https://github.com/help660vip/wireguard"
+
 # 提示用户输入监听端口、公网IP和客户端数量
 read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
 SERVER_LISTEN_PORT=${SERVER_LISTEN_PORT:-51820}
