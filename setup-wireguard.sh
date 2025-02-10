@@ -6,9 +6,9 @@ SERVER_CONFIG="$BASE_DIR/wg0.conf"        # 服务器端的 WireGuard 配置文�
 SERVER_PRIVATE_KEY_FILE="$BASE_DIR/server_privatekey"  # 服务器私钥文件
 SERVER_PUBLIC_KEY_FILE="$BASE_DIR/server_publickey"    # 服务器公钥文件
 SERVER_LISTEN_PORT=51820                   # 服务器监听端口
-SERVER_PUBLIC_IP="服务器端地址"             # 服务器的公网IP地址或dns解析过的域名 (需要替换为实际值)
+SERVER_PUBLIC_IP="<服务器的公网IP>"             # 服务器的公网IP地址 (需要替换为实际值)
 CLIENTS_DIR="$BASE_DIR/clients"            # 客户端配置文件保存目录
-CLIENT_COUNT=50                            # 客户端数量(≤253)
+CLIENT_COUNT=50                            # 客户端数量
 SUBNET="10.2.0.0/24"                       # IP 段
 
 # 创建文件夹结构
@@ -25,7 +25,7 @@ SERVER_PUBLIC_KEY=$(cat $SERVER_PUBLIC_KEY_FILE)
 echo "生成并更新服务器配置文件 $SERVER_CONFIG..."
 cat << EOF > $SERVER_CONFIG
 [Interface]
-Address = 10.2.0.1/24
+Address = 10.2.0.1/32
 PrivateKey = $SERVER_PRIVATE_KEY
 ListenPort = $SERVER_LISTEN_PORT
 EOF
