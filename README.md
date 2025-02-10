@@ -21,9 +21,7 @@ sysctl -p
 ```
 #下载脚本
 wget https://raw.githubusercontent.com/help660vip/wireguard/refs/heads/main/setup-wireguard.sh
-#编辑脚本
-nano setup-wireguard.sh
-#填上自己想要的端口 服务器端地址 客户端数量后按ctrl+x 然后按y 随后回车
+
 #使用脚本
 chmod +x setup-wireguard.sh && bash setup-wireguard.sh
 ```
