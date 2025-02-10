@@ -1,19 +1,30 @@
 #!/bin/bash
 
-# 设置一些基础变量
-BASE_DIR="$(pwd)/wireguard_setup"        # 创建的基础文件夹路径，位于当前目录下
-SERVER_CONFIG="$BASE_DIR/wg0.conf"        # 服务器端的 WireGuard 配置文件路径
+# 设置基础目录
+BASE_DIR="$(pwd)/wireguard_setup"            # 创建的基础文件夹路径，位于当前目录下
+SERVER_CONFIG="$BASE_DIR/wg0.conf"            # 服务器端的 WireGuard 配置文件路径
 SERVER_PRIVATE_KEY_FILE="$BASE_DIR/server_privatekey"  # 服务器私钥文件
 SERVER_PUBLIC_KEY_FILE="$BASE_DIR/server_publickey"    # 服务器公钥文件
-SERVER_LISTEN_PORT=51820                   # 服务器监听端口
-SERVER_PUBLIC_IP="<服务器的公网IP>"             # 服务器的公网IP地址 (需要替换为实际值)
-CLIENTS_DIR="$BASE_DIR/clients"            # 客户端配置文件保存目录
-CLIENT_COUNT=50                            # 客户端数量
-SUBNET="10.2.0.0/24"                       # IP 段
+CLIENTS_DIR="$BASE_DIR/clients"              # 客户端相关文件的根目录
+KEYS_DIR="$CLIENTS_DIR/keys"                 # 存储客户端密钥的文件夹
+CONFIGS_DIR="$CLIENTS_DIR/configs"           # 存储客户端配置文件的文件夹
 
 # 创建文件夹结构
 echo "创建文件夹结构..."
-mkdir -p "$CLIENTS_DIR"
+mkdir -p "$KEYS_DIR"
+mkdir -p "$CONFIGS_DIR"
+
+# 提示用户输入监听端口、公网IP和客户端数量
+read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
+SERVER_LISTEN_PORT=${SERVER_LISTEN_PORT:-51820}
+
+read -p "请输入服务器的公网IP地址: " SERVER_PUBLIC_IP
+
+read -p "请输入客户端数量 (默认为 50): " CLIENT_COUNT
+CLIENT_COUNT=${CLIENT_COUNT:-50}
+
+# 设置内网 IP 段
+SUBNET="10.2.0.0/24"
 
 # 生成服务器端密钥对
 echo "生成服务器端密钥对..."
@@ -25,7 +36,7 @@ SERVER_PUBLIC_KEY=$(cat $SERVER_PUBLIC_KEY_FILE)
 echo "生成并更新服务器配置文件 $SERVER_CONFIG..."
 cat << EOF > $SERVER_CONFIG
 [Interface]
-Address = 10.2.0.1/32
+Address = 10.2.0.1/24
 PrivateKey = $SERVER_PRIVATE_KEY
 ListenPort = $SERVER_LISTEN_PORT
 EOF
@@ -38,8 +49,8 @@ sed -i '/^\[Peer\]/,$d' $SERVER_CONFIG
 echo "为每个客户端生成密钥对和配置文件..."
 for i in $(seq 1 $CLIENT_COUNT); do
   # 生成客户端密钥对
-  CLIENT_PRIVATE_KEY_FILE="$CLIENTS_DIR/client${i}_privatekey"
-  CLIENT_PUBLIC_KEY_FILE="$CLIENTS_DIR/client${i}_publickey"
+  CLIENT_PRIVATE_KEY_FILE="$KEYS_DIR/client${i}_privatekey"
+  CLIENT_PUBLIC_KEY_FILE="$KEYS_DIR/client${i}_publickey"
   wg genkey | tee $CLIENT_PRIVATE_KEY_FILE | wg pubkey > $CLIENT_PUBLIC_KEY_FILE
   
   CLIENT_PRIVATE_KEY=$(cat $CLIENT_PRIVATE_KEY_FILE)
@@ -49,7 +60,7 @@ for i in $(seq 1 $CLIENT_COUNT); do
   CLIENT_IP="10.2.0.$((i + 1))"
   
   # 生成客户端配置文件
-  CLIENT_CONFIG_FILE="$CLIENTS_DIR/client${i}_wg0.conf"
+  CLIENT_CONFIG_FILE="$CONFIGS_DIR/client${i}_wg0.conf"
   cat << EOF > $CLIENT_CONFIG_FILE
 [Interface]
 Address = $CLIENT_IP/32
