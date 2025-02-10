@@ -19,7 +19,15 @@ mkdir -p "$CONFIGS_DIR"
 read -p "请输入服务器监听端口 (默认为 51820): " SERVER_LISTEN_PORT
 SERVER_LISTEN_PORT=${SERVER_LISTEN_PORT:-51820}
 
-read -p "请输入服务器的公网IP地址或经dns解析过的域名: " SERVER_PUBLIC_IP
+# 确保公网IP输入不为空
+while true; do
+    read -p "请输入服务器的公网IP地址或经dns解析后的域名: " SERVER_PUBLIC_IP
+    if [ -z "$SERVER_PUBLIC_IP" ]; then
+        echo "公网IP地址或经dns解析后的域名不能为空，请重新输入。"
+    else
+        break
+    fi
+done
 
 # 客户端数量必须大于等于 1 且小于等于 253
 while true; do
