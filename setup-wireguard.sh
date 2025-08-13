@@ -116,6 +116,7 @@ ListenPort = $WG_PORT
 PrivateKey = $SERVER_PRIV
 PostUp   = iptables -A FORWARD -i $WG_IF -j ACCEPT; iptables -A FORWARD -o $WG_IF -j ACCEPT; iptables -t nat -A POSTROUTING -o $DEF_IF -j MASQUERADE
 PostDown = iptables -D FORWARD -i $WG_IF -j ACCEPT; iptables -D FORWARD -o $WG_IF -j ACCEPT; iptables -t nat -D POSTROUTING -o $DEF_IF -j MASQUERADE
+DNS = 223.5.5.5
 EOF
 chmod 600 "$WG_CONF_DIR/$WG_IF.conf"
 
